@@ -7,7 +7,9 @@ document.create = function create(el, atributos, appendTo){
         elemento.appendChild(child);
       });
     }else if(atributo == "addEventListener"){
-       elemento.addEventListener(atributos[atributo].event, atributos[atributo].function);
+      elemento.addEventListener(atributos[atributo].event, atributos[atributo].function);
+    }else if(atributo == "style"){
+      elemento.setAttribute("style", atributos[atributo]);
     }else{
       if(elemento[atributo] !== null && elemento[atributo] !== undefined){
         elemento[atributo] = atributos[atributo];
