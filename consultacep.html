@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+  font-family:sans-serif;
+}
+</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/w3.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.sollic.com/js/inputmask.js"></script>
+</head>
+<body>
+<div class="w3-container w3-margin">
+  <div class="w3-row">
+    <input class="w3-input w3-threequarter w3-border" type="text" id="cep" placeholder="00000-000">
+    <button class="w3-button w3-quarter w3-deep-purple" class="button" onclick="buscaCEP()">Buscar</button>
+  </div>
+  <br>
+  <ul class="w3-ul w3-border" id="output">
+    <li>Faça uma busca.</li>
+  </ul>
+</div>
+<script>
+function buscaCEP(){
+  var cep = document.getElementById("cep").value;
+  var output = document.getElementById("output");
+  
+  $.getJSON("https://viacep.com.br/ws/"+document.getElementById("cep").value+"/json/", function(result){
+    if(!result.erro){
+      output.innerHTML = '<li class="w3-deep-purple">Resultados do CEP: <b>'+ cep +'</b></li><li><b>Cidade:</b> '+ result.localidade +'</li>\n<li><b>Estado:</b> '+ result.uf +'</li>\n<li><b>DDD:</b> '+result.ddd+'</li>\n<li><b>Logradouro:</b> '+ result.logradouro +'</li><li><b>Bairro:</b> '+ result.bairro +'</li>';
+    }else{
+      output.innerHTML = '<li class="w3-red">CEP inválido.</li>';
+      setTimeout(function(){
+        output.innerHTML = "<li>Faça uma busca.</li>";
+      }, 3000);
+    }
+  });
+}
+
+$("#cep").inputmask({
+  mask: "99999-999"
+});
+</script>
+</body>
+</html>
