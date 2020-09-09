@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+  font-family:sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="w3-container w3-margin">
+  <div class="w3-row">
+    <input class="w3-input w3-threequarter w3-border" type="text" id="cnpj" placeholder="00.000.000/0000-00">
+    <button class="w3-button w3-quarter w3-deep-purple" class="button" onclick="buscaCNPJ()">Buscar</button>
+  </div>
+  <br>
+  <ul class="w3-ul w3-border" id="output">
+    <li>Faça uma busca.</li>
+  </ul>
+</div>
+<script>
+function buscaCNPJ(){
+  var output = document.getElementById("output");
+  var cnpj = document.getElementById("cnpj");
+  if(cnpj.value != ""){
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://consulta-cnpj-gratis.p.rapidapi.com/companies/"+cnpj.value.split(".").join("").replace("-","").replace("/",""),
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": "consulta-cnpj-gratis.p.rapidapi.com",
+        "x-rapidapi-key": "8c3ecf84ffmshbf64676993a659ep11f92fjsn398609bcc327"
+      }
+    }
+
+    $.ajax(settings).done(function (result) {
+      console.log(result)
+      
+      // compatibilidade com internet explorer
+      output.innerHTML = "\n<li class=\"w3-deep-purple\">Resultados do CNPJ: <b>".concat(cnpj.value, "</b></li>\n<li><b>Raz\xE3o Social:</b> ").concat(result.name, "</li>\n<li><b>Nome Fantasia:</b> ").concat(result.alias ? result.alias : "NÃO POSSUI", "</li>\n<li><b>Inscri\xE7\xE3o Estadual:</b> ").concat(result.sintegra.home_state_registration ? result.sintegra.home_state_registration : "ISENTO", "</li>\n<li><b>Logradouro:</b> ").concat(result.address.street, "</li>\n<li><b>Numero:</b> ").concat(result.address.number, "</li>\n<li><b>Complementos:</b> ").concat(result.address.details ? result.address.details : "NÃO POSSUI", "</li>\n<li><b>Cidade:</b> ").concat(result.address.city, "</li>\n<li><b>Estado:</b> ").concat(result.address.state, "</li>\n<li><b>Situa\xE7\xE3o:</b> ").concat(result.registration.status, "</li>\n");
+      
+      /** ES6 ** apenas para o proposito de facil edição **
+      output.innerHTML = `
+      <li class="w3-deep-purple">Resultados do CNPJ: <b>${cnpj.value}</b></li>
+      <li><b>Razão Social:</b> ${result.name}</li>
+      <li><b>Nome Fantasia:</b> ${result.alias ? result.alias : "NÃO POSSUI"}</li>
+      <li><b>Inscrição Estadual:</b> ${result.sintegra.home_state_registration ? result.sintegra.home_state_registration : "ISENTO"}</li>
+      <li><b>Logradouro:</b> ${result.address.street}</li>
+      <li><b>Numero:</b> ${result.address.number}</li>
+      <li><b>Complementos:</b> ${result.address.details ? result.address.details : "NÃO POSSUI"}</li>
+      <li><b>Cidade:</b> ${result.address.city}</li>
+      <li><b>Estado:</b> ${result.address.state}</li>
+      <li><b>Situação:</b> ${result.registration.status}</li>
+      `*/
+    });
+  }
+}
+
+$("#cnpj").inputmask({
+  mask: "99.999.999/9999-99"
+});
+function openW(){
+  let win = window.open("", "window", "width=400,height=600")
+  win.document.write(document.body.innerHTML)
+}
+</script>
+</body>
+</html>
