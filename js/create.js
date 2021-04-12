@@ -11,7 +11,7 @@ document.create = function create(el, atributos, appendTo){
     }else if(atributo == "style"){
       elemento.setAttribute("style", atributos[atributo]);
     }else{
-      if(elemento[atributo] !== null && elemento[atributo] !== undefined){
+      if(elemento[atributo] !== undefined){
         elemento[atributo] = atributos[atributo];
       }
     }
